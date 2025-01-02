@@ -1,0 +1,8 @@
+<!-- start Simple Custom CSS and JS -->
+<style type="text/css">
+#adminmenu .wp-has-current-submenu .wp-menu-image img {
+    width: 20px; /* Adjust size for active menu items */
+    height: 20px;
+    object-fit: contain;
+}</style>
+<!-- end Simple Custom CSS and JS -->

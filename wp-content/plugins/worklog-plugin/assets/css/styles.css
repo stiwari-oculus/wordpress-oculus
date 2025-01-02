@@ -1,0 +1,9 @@
+#worklog-warning {
+    color: red;
+    margin-bottom: 10px;
+}
+#adminmenu .toplevel_page_worklog-settings .wp-menu-image img {
+    width: 20px !important; 
+    height: 20px !important; 
+    object-fit: contain !important; 
+}
