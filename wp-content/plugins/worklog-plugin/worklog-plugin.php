@@ -23,13 +23,12 @@ class WorklogPlugin {
     public function enqueue_assets($hook) {
         // Enqueue scripts and styles for admin screens
         if ($hook === 'post.php' || $hook === 'post-new.php' || $hook === 'toplevel_page_worklog-settings') {
-
             wp_enqueue_script('datetimepicker', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js', ['jquery'], null, true);
             wp_enqueue_style('datetimepicker-style', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css');
             
-           // Enqueue Bootstrap assets
+            // Enqueue Bootstrap assets
             wp_enqueue_style('bootstrap-css', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css', [], '5.3.0');
-            wp_enqueue_script('bootstrap-js', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js', ['jquery'], '5.3.0', true); 
+            wp_enqueue_script('bootstrap-js', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js', ['jquery'], '5.3.0', true);
             
             wp_enqueue_script('worklog-js', plugin_dir_url(__FILE__) . 'assets/js/worklog.js', ['jquery'], null, true);
             wp_enqueue_style('worklog-css', plugin_dir_url(__FILE__) . 'assets/css/styles.css');
@@ -110,20 +109,27 @@ class WorklogPlugin {
     }
 
     public function add_admin_menu() {
-        // Add settings page
-        $icon_url = plugin_dir_url(__FILE__) . 'assets/images/logo.jpg';
-        add_menu_page(
-            'Worklog Settings',
-            'Worklog Settings',
-            'manage_options',
-            'worklog-settings',
-            [$this, 'render_settings_page'],
-            $icon_url,
-            50
-        );
+        // Add settings page for admins only
+        if (current_user_can('administrator')) {
+            $icon_url = plugin_dir_url(__FILE__) . 'assets/images/logo.jpg';
+            add_menu_page(
+                'Worklog Settings',
+                'Worklog Settings',
+                'manage_options',
+                'worklog-settings',
+                [$this, 'render_settings_page'],
+                $icon_url,
+                50
+            );
+        }
     }
 
     public function render_settings_page() {
+        // Ensure only admins can access the settings page
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'worklog-plugin'));
+        }
+
         include plugin_dir_path(__FILE__) . 'views/settings-page.php';
     }
 }

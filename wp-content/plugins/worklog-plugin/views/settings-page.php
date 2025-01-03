@@ -62,8 +62,8 @@
             }
 
             if (!empty($_GET['end_date'])) {
-                $conditions[] = "w.start_date <= %s";
-                $params[] = $_GET['end_date'];
+                $conditions[] = "w.start_date < %s";
+                $params[] = date('Y-m-d', strtotime($_GET['end_date'] . ' +1 day'));
             }
 
             if ($conditions) {
@@ -86,7 +86,7 @@
                     $post_link = get_permalink($post_id);
                     $author = get_user_by('id', $author_id);
 
-                    // Convert the start_date to "December 24, 2024"
+                    // Convert the start_date to "January 3, 2025"
                     $formatted_date = date("F j, Y", strtotime($start_date));
 
                     // Convert time spent (e.g., "1h 30m") to a readable format
