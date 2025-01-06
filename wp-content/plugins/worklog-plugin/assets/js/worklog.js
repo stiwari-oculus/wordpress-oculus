@@ -22,4 +22,27 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+    // Reset form fields on Reset button click
+    $('#reset_button').on('click', function() {
+        $('#worklog-form')[0].reset(); // Reset all form fields
+
+    
+        $('select[name="author_id"]').val(''); // Reset author dropdown to default option
+        
+        $('#start_date').val(''); 
+        $('#end_date').val('').attr('min', '');
+
+        // Optionally reset the "To Date" field to allow any date
+        $('#end_date').removeAttr('min'); 
+    });
+
+    $('#start_date').on('change', function() {
+        // Get the selected "From Date"
+        var fromDate = $(this).val();
+        
+        // Set the min value of the "To Date" field to the selected "From Date"
+        $('#end_date').attr('min', fromDate);
+        $('#end_date').val(fromDate);
+    });
 });
